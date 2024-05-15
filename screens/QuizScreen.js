@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ProgressBarAndroid, RadioButton } from 'react-native';
+import { Button, Text, View } from 'react-native';
+import * as Progress from 'react-native-progress';
+import { RadioButton } from '../components/RadioButton';
 
 const questions = [
   {
@@ -28,7 +30,7 @@ const questions = [
   }
 ];
 
-const Quiz = () => {
+const QuizScreen = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
@@ -50,8 +52,7 @@ const Quiz = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Pytanie  {currentQuestion + 1}</Text>
-      <ProgressBarAndroid
-        styleAttr="Horizontal"
+      <Progress.Bar
         indeterminate={false}
         progress={(currentQuestion + 1) / questions.length}
         style={{ width: '80%', marginBottom: 10 }}
@@ -72,4 +73,4 @@ const Quiz = () => {
   );
 };
 
-export default Quiz;
+export default QuizScreen;

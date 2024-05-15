@@ -1,16 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { RadioButton } from './components/RadioButton';
-import Quiz from './quiz';
+import { StyleSheet, View } from 'react-native';
+import QuizScreen from './screens/QuizScreen.js';
 
 export default function App() {
   return (
-    // <View style={styles.container}>
-    //   <StatusBar style="auto" />
-    //   <RadioButton answer="ABC"/>
-    //   <RadioButton answer="ABC"/>
-    // </View>
-    Quiz
+    <View style={styles.container}>
+      <StatusBar style="auto" />
+      <QuizScreen />
+    </View>
   );
 }
 
