@@ -1,37 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, PanResponder, Animated, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Image, PanResponder, Animated, Dimensions } from "react-native";
 
 const Puzzle = ({ imageUri, rows, cols, onSolved }) => {
   const [pieces, setPieces] = useState([]);
   const [solved, setSolved] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
-    const img = Image.resolveAssetSource(imageUri);
-    Image.getSize(imageUri, (width, height) => {
-      setImageDimensions({ width, height });
-      const pieceWidth = width / cols;
-      const pieceHeight = height / rows;
+    Image.getSize(
+      imageUri,
+      (width, height) => {
+        setImageDimensions({ width: width, height: height });
+        const pieceWidth = width / cols;
+        const pieceHeight = height / rows;
 
-      const newPieces = [];
-      for (let i = 0; i < rows * cols; i++) {
-        const row = Math.floor(i / cols);
-        const col = i % cols;
-        const x = col * pieceWidth;
-        const y = row * pieceHeight;
-        newPieces.push({ index: i, x, y });
-      }
-      setPieces(newPieces);
-    }, error => console.error('Failed to get image size:', error));
+        const newPieces = [];
+        for (let i = 0; i < rows * cols; i++) {
+          const row = Math.floor(i / cols);
+          const col = i % cols;
+          const x = col * pieceWidth;
+          const y = row * pieceHeight;
+          newPieces.push({ index: i, x, y });
+        }
+        setPieces(newPieces);
+      },
+      (error) => console.error("Failed to get image size:", error)
+    );
   }, [imageUri, rows, cols]);
 
   const handlePieceDrop = (index, x, y) => {
-    const targetX = Math.floor(x / (imageDimensions.width / cols)) * (imageDimensions.width / cols);
-    const targetY = Math.floor(y / (imageDimensions.height / rows)) * (imageDimensions.height / rows);
+    const targetX =
+      Math.floor(x / (imageDimensions.width / cols)) *
+      (imageDimensions.width / cols);
+    const targetY =
+      Math.floor(y / (imageDimensions.height / rows)) *
+      (imageDimensions.height / rows);
 
     const newPieces = [...pieces];
-    const movedPiece = newPieces.find(piece => piece.index === index);
-    const emptyPiece = newPieces.find(piece => piece.index === rows * cols - 1);
+    const movedPiece = newPieces.find((piece) => piece.index === index);
+    const emptyPiece = newPieces.find(
+      (piece) => piece.index === rows * cols - 1
+    );
 
     movedPiece.x = targetX;
     movedPiece.y = targetY;
@@ -52,15 +64,15 @@ const Puzzle = ({ imageUri, rows, cols, onSolved }) => {
   };
 
   const renderPuzzlePieces = () => {
-    return pieces.map(piece => {
+    return pieces.map((piece) => {
       return (
         <Animated.View
           key={piece.index}
           style={{
-            position: 'absolute',
+            position: "absolute",
             width: imageDimensions.width / cols,
             height: imageDimensions.height / rows,
-            transform: [{ translateX: piece.x }, { translateY: piece.y }]
+            transform: [{ translateX: piece.x }, { translateY: piece.y }],
           }}
           {...panResponder.panHandlers}
         >
@@ -70,7 +82,7 @@ const Puzzle = ({ imageUri, rows, cols, onSolved }) => {
               width: imageDimensions.width,
               height: imageDimensions.height,
               marginLeft: -piece.x,
-              marginTop: -piece.y
+              marginTop: -piece.y,
             }}
           />
         </Animated.View>
@@ -88,11 +100,13 @@ const Puzzle = ({ imageUri, rows, cols, onSolved }) => {
     onPanResponderRelease: (_, gesture) => {
       const { index, x, y } = gesture;
       handlePieceDrop(index, x, y);
-    }
+    },
   });
 
   return (
-    <View style={{ width: imageDimensions.width, height: imageDimensions.height }}>
+    <View
+      style={{ width: imageDimensions.width, height: imageDimensions.height }}
+    >
       {renderPuzzlePieces()}
     </View>
   );
