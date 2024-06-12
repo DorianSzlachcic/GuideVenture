@@ -2,8 +2,11 @@ import { Alert, StyleSheet, Text, TextInput, View, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { router } from "expo-router";
-
 import Settings from "./settings";
+import QuizScreen from "./screens/QuizScreen";
+import PhotoScreen from "./screens/PhotoScreen";
+import PuzzleScreen from "./screens/PuzzleScreen";
+import SummaryScreen from "./screens/SummaryScreen";
 
 function startGame(pin) {
   if (pin !== "")
@@ -33,30 +36,33 @@ function startGame(pin) {
 export default function Page() {
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Text>PIN gry</Text>
-      <TextInput
-        onChangeText={setPin}
-        value={pin}
-        placeholder="Wpisz PIN gry"
-        keyboardType="numeric"
-      />
-      <Text>Nazwa gracza/zespołu</Text>
-      <TextInput
-        onChangeText={setName}
-        value={name}
-        placeholder="Wpisz nazwę gracza/zespołu"
-      />
-      <Button
-        title="Zacznij grę"
-        onPress={() => {
-          startGame(pin);
-        }}
-      />
-    </View>
+    <StatusBar style="auto" />
+    <SummaryScreen />
+  </View>
+    // <View style={styles.container}>
+    //   <StatusBar style="auto" />
+    //   <Text>PIN gry</Text>
+    //   <TextInput
+    //     onChangeText={setPin}
+    //     value={pin}
+    //     placeholder="Wpisz PIN gry"
+    //     keyboardType="numeric"
+    //   />
+    //   <Text>Nazwa gracza/zespołu</Text>
+    //   <TextInput
+    //     onChangeText={setName}
+    //     value={name}
+    //     placeholder="Wpisz nazwę gracza/zespołu"
+    //   />
+    //   <Button
+    //     title="Zacznij grę"
+    //     onPress={() => startGame(pin, router)}
+    //   />
+    // </View>
   );
 }
 

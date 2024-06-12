@@ -1,13 +1,18 @@
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import QuizScreen from "./screens/QuizScreen";
+import PhotoScreen from "./screens/PhotoScreen";
+import PuzzleScreen from "./screens/PuzzleScreen";
 import NavigationScreen from "./screens/NavigationScreen";
+import SummaryScreen from "./screens/SummaryScreen";
 import Settings from "./settings";
 
 export default function Gameplay() {
-  const [stepNum, setStepNum] = useState(1);
+  const [stepNum, setStepNum] = useState(2);
   const [step, setStep] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -27,6 +32,15 @@ export default function Gameplay() {
       });
   }, [stepNum]);
 
+  const onNextAction = (additionalPoints = 0, photo = null) => {
+    setPoints(points + additionalPoints);
+    if (photo) {
+      setPhotos([...photos, photo]);
+    }
+    setLoaded(false);
+    setStepNum(stepNum + 1);
+  };
+
   if (!loaded)
     return (
       <View style={styles.container}>
@@ -34,17 +48,24 @@ export default function Gameplay() {
       </View>
     );
 
-  const onNextAction = () => {
-    setStepNum(stepNum + 1);
-  };
+  if (!step) {
+    return <SummaryScreen points={points} photos={photos} />;
+  }
 
-  if (step !== null)
-    switch (step["step_type"]) {
-      case "quiz":
-        return <QuizScreen step={step} onNextAction={onNextAction} />;
-      default:
-        break;
-    }
+  switch (step.step_type) {
+    case "quiz":
+      return <QuizScreen step={step} onNextAction={onNextAction} />;
+    case "photo":
+      return <PhotoScreen step={step} onNextAction={onNextAction} />;
+    case "puzzle":
+      return <PuzzleScreen step={step} onNextAction={onNextAction} />;
+    default:
+      return (
+        <View style={styles.container}>
+          <Text>Unknown step type</Text>
+        </View>
+      );
+  }
 }
 
 const styles = StyleSheet.create({
