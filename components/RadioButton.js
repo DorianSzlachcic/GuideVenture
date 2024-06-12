@@ -1,32 +1,43 @@
-import {StyleSheet, View, Text, Image} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 
-export function RadioButton(props) {
+export function RadioButton({ answer, onPress, isSelected }) {
   return (
-    <View style={stylesheet.root}>
-      <View style={stylesheet.body}>
-        <Image source={{uri: "asset:images/check.png"}} style={{width: 24, height: 24}} resizeMode="cover"/>
-        <Text style={stylesheet.answer}>
-            {props.answer}
-        </Text>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+      <View style={[styles.root, isSelected && styles.selected]}>
+        <View style={styles.body}>
+          {isSelected && (
+            <Image
+              source={{ uri: "asset:images/check.png" }}
+              style={{ width: 24, height: 24 }}
+              resizeMode="cover"
+            />
+          )}
+          <Text style={styles.answer}>
+            {answer}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
-const stylesheet = StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
-    width: 302,
-    height: 52,
-  },
-  body: {
     width: 302,
     height: 52,
     borderRadius: 5,
     backgroundColor: 'grey',
-    flex:1,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center',
+    marginBottom: 10,
+  },
+  selected: {
+    backgroundColor: 'blue', // Zmiana koloru tła, gdy element jest zaznaczony
+  },
+  body: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   answer: {
     color: 'white',
