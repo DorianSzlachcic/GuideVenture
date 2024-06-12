@@ -6,14 +6,14 @@ import Puzzle from "./screens/Puzzle.js";
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <StatusBar style="auto" />
-      <QuizScreen /> */}
-      <Puzzle
+      <StatusBar style="auto" />
+      <QuizScreen />
+      {/* <Puzzle
         imageUri={require("./screens/wroclaw.jpeg")}
         rows={3}
         cols={3}
         onSolved={() => console.log("Puzzle solved!")}
-      />
+      /> */}
     </View>
   );
 }
