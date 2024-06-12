@@ -6,22 +6,28 @@ import { router } from "expo-router";
 import Settings from "./settings";
 
 function startGame(pin) {
-  fetch(Settings.ApiUrl + "games/" + pin)
-    .then((res) => {
-      if (res.status != 200) {
-        Alert.alert(
-          "Niepoprawny PIN gry",
-          "Nie udało się znaleźć gry o podanym PINie"
-        );
-        return null;
-      } else return res.json();
-    })
-    .then((json) => {
-      if (json !== null) {
-        Settings.GameId = pin;
-        router.navigate("/intro");
-      }
-    });
+  if (pin !== "")
+    fetch(Settings.ApiUrl + "games/" + pin)
+      .then((res) => {
+        if (res.status != 200) {
+          Alert.alert(
+            "Niepoprawny PIN gry",
+            "Nie udało się znaleźć gry o podanym PINie"
+          );
+          return null;
+        } else return res.json();
+      })
+      .then((json) => {
+        if (json !== null) {
+          Settings.GameId = pin;
+          router.navigate("/intro");
+        }
+      });
+  else
+    Alert.alert(
+      "Niepoprawny PIN gry",
+      "Nie udało się znaleźć gry o podanym PINie"
+    );
 }
 
 export default function Page() {

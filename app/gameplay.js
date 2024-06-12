@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { ActivityIndicator, View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import QuizScreen from "./screens/QuizScreen";
+import NavigationScreen from "./screens/NavigationScreen";
+import Settings from "./settings";
 
 export default function Gameplay() {
   const [stepNum, setStepNum] = useState(1);
@@ -12,8 +14,8 @@ export default function Gameplay() {
       Settings.ApiUrl +
         "games/" +
         Settings.GameId +
-        "/step/" +
-        toString(stepNum)
+        "/steps/" +
+        stepNum.toString()
     )
       .then((res) => {
         if (res.status !== 200) return null;
@@ -36,12 +38,13 @@ export default function Gameplay() {
     setStepNum(stepNum + 1);
   };
 
-  switch (step["step_type"]) {
-    case "quiz":
-      return <QuizScreen step={step} onNextAction={onNextAction} />;
-    default:
-      break;
-  }
+  if (step !== null)
+    switch (step["step_type"]) {
+      case "quiz":
+        return <QuizScreen step={step} onNextAction={onNextAction} />;
+      default:
+        break;
+    }
 }
 
 const styles = StyleSheet.create({
