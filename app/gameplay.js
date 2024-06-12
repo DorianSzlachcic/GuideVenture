@@ -1,12 +1,47 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import QuizScreen from "./screens/QuizScreen";
 
 export default function Gameplay() {
-  return (
-    <View style={styles.container}>
-      <Text>controller</Text>
-    </View>
-  );
+  const [stepNum, setStepNum] = useState(1);
+  const [step, setStep] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetch(
+      Settings.ApiUrl +
+        "games/" +
+        Settings.GameId +
+        "/step/" +
+        toString(stepNum)
+    )
+      .then((res) => {
+        if (res.status !== 200) return null;
+        return res.json();
+      })
+      .then((s) => {
+        setStep(s);
+        setLoaded(true);
+      });
+  }, [stepNum]);
+
+  if (!loaded)
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+
+  const onNextAction = () => {
+    setStepNum(stepNum + 1);
+  };
+
+  switch (step["step_type"]) {
+    case "quiz":
+      return <QuizScreen step={step} onNextAction={onNextAction} />;
+    default:
+      break;
+  }
 }
 
 const styles = StyleSheet.create({

@@ -30,7 +30,7 @@ const questions = [
   },
 ];
 
-const QuizScreen = () => {
+const QuizScreen = (props) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 

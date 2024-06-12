@@ -12,6 +12,7 @@ import { router } from "expo-router";
 export default function Intro() {
   const [loaded, setLoaded] = useState(false);
   const [json, setJson] = useState(null);
+
   fetch(Settings.ApiUrl + "games/" + Settings.GameId)
     .then((res) => {
       if (res.status !== 200) return null;
@@ -21,6 +22,7 @@ export default function Intro() {
       setJson(j);
       setLoaded(true);
     });
+
   if (!loaded)
     return (
       <View style={styles.container}>
