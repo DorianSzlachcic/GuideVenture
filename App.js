@@ -1,19 +1,15 @@
+import * as React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
-import QuizScreen from "./screens/QuizScreen.js";
-import Puzzle from "./screens/Puzzle.js";
+import Controller from "./app/controller/Controller";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <QuizScreen />
-      {/* <Puzzle
-        imageUri={require("./screens/wroclaw.jpeg")}
-        rows={3}
-        cols={3}
-        onSolved={() => console.log("Puzzle solved!")}
-      /> */}
+      <Controller />
     </View>
   );
 }
